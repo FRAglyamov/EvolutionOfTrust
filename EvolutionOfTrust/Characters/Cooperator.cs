@@ -6,9 +6,10 @@ namespace EvolutionOfTrust.Characters
 {
     public class Cooperator : Character
     {
+        public Cooperator(int id) : base(id) { }
         public override Action FirstAction => Action.Coop;
 
-        public override Action MakeAction(string opponentId)
+        public override Action MakeAction(int opponentId)
         {
             return Action.Coop;
         }

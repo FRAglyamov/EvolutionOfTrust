@@ -14,8 +14,13 @@ namespace EvolutionOfTrust
     {
         public int id;
         public int points;
-        public Dictionary<string, List<Action>> OpponentsActions = new Dictionary<string, List<Action>>();
+        public Dictionary<int, List<Action>> OpponentsActions = new Dictionary<int, List<Action>>();
         public abstract Action FirstAction { get; }
-        public abstract Action MakeAction(string opponentId);
+        public abstract Action MakeAction(int opponentId);
+
+        public Character(int id)
+        {
+            this.id = id;
+        }
     }
 }

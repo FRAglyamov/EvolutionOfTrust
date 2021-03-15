@@ -5,64 +5,23 @@ using System.Text;
 
 namespace EvolutionOfTrust
 {
-    public class Match
+    internal class Match
     {
-        List<Character> characters;
-        int roundsAmount = 10;
-        int eliminateReproduceAmount = 5;
-        int mistakeChance = 5;
-        bool isFirstRound = true;
-
-        void PlayTournament()
-        {
-            for (int i = 0; i < roundsAmount; i++)
-            {
-                PlayRound();
-            }
-            GeneticLikeReproduce();
-        }
-
-
-        /// <summary>
-        /// Удаляет персонажей с наименьшим количеством очков и генерирует на их место с наибольшим количеством за весь турнир
-        /// </summary>
-        private void GeneticLikeReproduce() // Придумать нормальное название
-        {
-            characters.OrderByDescending(c => c.points);
-            characters.RemoveRange(characters.Count - eliminateReproduceAmount - 1, eliminateReproduceAmount);
-            var topCharacters = characters.Take(eliminateReproduceAmount);
-            characters.AddRange(topCharacters);
-        }
-
-        private void PlayRound()
-        {
-            foreach (Character c1 in characters)
-            {
-                foreach (Character c2 in characters)
-                {
-                    if (c1 == c2)
-                        continue;
-                    Match2Characters(c1, c2);
-                }
-            }
-        }
-
-
-
-        void Match2Characters(Character c1, Character c2) // Добавить вероятность ошибки
+        public void Match2Characters(Character c1, Character c2, bool isFirstRound) // Добавить вероятность ошибки
         {
             Action c1Action, c2Action;
-            if (isFirstRound)
+            if (isFirstRound || c1.OpponentsActions.ContainsKey(c2.id) == false)
             {
                 c1Action = c1.FirstAction;
                 c2Action = c2.FirstAction;
-                isFirstRound = false;
             }
             else
             {
-                c1Action = c1.MakeAction("");
-                c2Action = c2.MakeAction("");
+                c1Action = c1.MakeAction(c2.id);
+                c2Action = c2.MakeAction(c1.id);
             }
+            MemorizeOpponentAction(c1, c2, c2Action);
+            MemorizeOpponentAction(c2, c1, c1Action);
             switch ((c1Action, c2Action))
             {
                 case (Action.Coop, Action.Coop):
@@ -81,6 +40,14 @@ namespace EvolutionOfTrust
                     break;
             }
         }
+
+        private static void MemorizeOpponentAction(Character character, Character opponent, Action opponentAction)
+        {
+            if (!character.OpponentsActions.ContainsKey(opponent.id))
+                character.OpponentsActions.Add(opponent.id, new List<Action>());
+            character.OpponentsActions[opponent.id].Add(opponentAction);
+        }
+
         void CoopBothResult(Character c1, Character c2)
         {
             c1.points += 2; // Заменить 2 на переменную
