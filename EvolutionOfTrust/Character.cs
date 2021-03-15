@@ -22,5 +22,14 @@ namespace EvolutionOfTrust
         {
             this.id = id;
         }
+        public Character Clone()
+        {
+            return (Character)this.MemberwiseClone();
+        }
+
+        //public int CompareTo(Character other)
+        //{
+        //    return points.CompareTo(other.points);
+        //}
     }
 }

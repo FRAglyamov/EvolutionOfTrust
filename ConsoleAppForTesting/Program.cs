@@ -15,6 +15,8 @@ namespace ConsoleAppForTesting
             characters.Add(new Copycat(characters.Count));
             characters.Add(new Copycat(characters.Count));
             characters.Add(new Copycat(characters.Count));
+            characters.Add(new Copycat(characters.Count));
+            characters.Add(new Copycat(characters.Count));
             Tournament tournament = new Tournament();
             tournament.PlayTournament(characters);
             Console.ReadKey();

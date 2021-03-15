@@ -18,11 +18,11 @@ namespace EvolutionOfTrust
             characters = _characters;
             for (int i = 1; i <= roundsAmount; i++)
             {
-                Console.WriteLine();
-                PrintResults();
+                //Console.WriteLine();
+                //PrintResults();
                 PlayRound();
-                Console.WriteLine();
-                PrintResults();
+                //Console.WriteLine();
+                //PrintResults();
                 GeneticLikeReproduce(i);
                 Console.WriteLine("\nRound " + i);
                 PrintResults();
@@ -36,25 +36,10 @@ namespace EvolutionOfTrust
         /// </summary>
         private void GeneticLikeReproduce(int round) // Придумать нормальное название
         {
-            characters.OrderByDescending(c => c.points);
+            characters.Sort((c1, c2) => c2.points.CompareTo(c1.points));
             characters.RemoveRange(characters.Count - eliminateReproduceAmount, eliminateReproduceAmount);
 
-            // Копируются ссылки, нужно сделать копию значений!!!
-            var topCharacters = characters.Take(eliminateReproduceAmount).ToList();
-
-            
-            //List<Character> topCharacters = new List<Character>();
-
-            //foreach (Character item in characters.Take(eliminateReproduceAmount).ToList())
-            //{
-            //    topCharacters.Add(new item.GetType())
-            //}
-            //for (int i = characters.Count - eliminateReproduceAmount; i < characters.Count; i++)
-            //{
-            //    topCharacters.Add(new(characters[i].GetType().BaseType()) { });
-            //}
-
-
+            var topCharacters = characters.Take(eliminateReproduceAmount).Select(x => x.Clone()).ToList();
             for (int i = 0; i < topCharacters.ToList().Count; i++)
             {
                 topCharacters[i].id += (characters.Count + eliminateReproduceAmount) * round;
