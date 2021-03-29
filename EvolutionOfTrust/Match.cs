@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace EvolutionOfTrust
 {
     internal class Match
     {
-        public void Match2Characters(Character c1, Character c2, bool isFirstRound) // Добавить вероятность ошибки
+        PointsSystem _pointsSystem;
+        internal Match(PointsSystem pointsSystem)
+        {
+            PointsSystem _pointsSystem = pointsSystem;
+        }
+        Random random = new Random();
+
+        public void Match2Characters(Character c1, Character c2, bool isFirstRound, int mistakeChance)
         {
             Action c1Action, c2Action;
             if (isFirstRound || c1.OpponentsActions.ContainsKey(c2.id) == false)
@@ -20,6 +25,9 @@ namespace EvolutionOfTrust
                 c1Action = c1.MakeAction(c2.id);
                 c2Action = c2.MakeAction(c1.id);
             }
+
+            MistakeRoll(mistakeChance, ref c1Action);
+            MistakeRoll(mistakeChance, ref c2Action);
             MemorizeOpponentAction(c1, c2, c2Action);
             MemorizeOpponentAction(c2, c1, c1Action);
             switch ((c1Action, c2Action))
@@ -41,6 +49,15 @@ namespace EvolutionOfTrust
             }
         }
 
+        private void MistakeRoll(int mistakeChance, ref Action c1Action)
+        {
+            if (mistakeChance > random.Next(1, 101))
+            {
+                Console.WriteLine("Mistake roll!");
+                c1Action += 1;
+            }
+        }
+
         private static void MemorizeOpponentAction(Character character, Character opponent, Action opponentAction)
         {
             if (!character.OpponentsActions.ContainsKey(opponent.id))
@@ -50,17 +67,18 @@ namespace EvolutionOfTrust
 
         void CoopBothResult(Character c1, Character c2)
         {
-            c1.points += 2; // Заменить 2 на переменную
-            c2.points += 2;
+            c1.points += _pointsSystem.CoopPoints;
+            c2.points += _pointsSystem.CoopPoints;
         }
         void CheatBothResult(Character c1, Character c2)
         {
-            // Добавить логике с переменными, пока ничего
+            c1.points += _pointsSystem.CheatBothPoints;
+            c2.points += _pointsSystem.CheatBothPoints;
         }
         void CoopCheatResult(Character coopCharacter, Character cheatCharacter)
         {
-            coopCharacter.points -= 1; // Заменить на переменные
-            cheatCharacter.points += 3;
+            coopCharacter.points += _pointsSystem.CheatedPoints;
+            cheatCharacter.points += _pointsSystem.CheatPoints;
         }
     }
 }

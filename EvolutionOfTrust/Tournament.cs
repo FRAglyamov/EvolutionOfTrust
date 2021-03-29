@@ -1,22 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace EvolutionOfTrust
 {
     public class Tournament
     {
         List<Character> characters;
-        int roundsAmount = 10;
-        int eliminateReproduceAmount = 1;
-        int mistakeChance = 5;
+        int _roundsAmount = 10;
+        int _eliminateReproduceAmount = 1;
+        int _mistakeChance = 5;
+        PointsSystem _pointsSystem = new PointsSystem();
         bool isFirstRound = true;
-        Match match = new Match();
+        Match match;
+
+        public Tournament() { }
+        public Tournament(int roundAmount, int eliminateReproduceAmount, int mistakeChance, PointsSystem pointsSystem)
+        {
+            _roundsAmount = roundAmount;
+            _eliminateReproduceAmount = eliminateReproduceAmount;
+            _mistakeChance = mistakeChance;
+            _pointsSystem = pointsSystem;
+        }
+
         public void PlayTournament(List<Character> _characters)
         {
+            Match match = new Match(_pointsSystem);
             characters = _characters;
-            for (int i = 1; i <= roundsAmount; i++)
+            for (int i = 1; i <= _roundsAmount; i++)
             {
                 //Console.WriteLine();
                 //PrintResults();
@@ -34,15 +45,15 @@ namespace EvolutionOfTrust
         /// <summary>
         /// Удаляет персонажей с наименьшим количеством очков и генерирует на их место с наибольшим количеством за весь турнир
         /// </summary>
-        private void GeneticLikeReproduce(int round) // Придумать нормальное название
+        private void GeneticLikeReproduce(int round)
         {
             characters.Sort((c1, c2) => c2.points.CompareTo(c1.points));
-            characters.RemoveRange(characters.Count - eliminateReproduceAmount, eliminateReproduceAmount);
+            characters.RemoveRange(characters.Count - _eliminateReproduceAmount, _eliminateReproduceAmount);
 
-            var topCharacters = characters.Take(eliminateReproduceAmount).Select(x => x.Clone()).ToList();
+            var topCharacters = characters.Take(_eliminateReproduceAmount).Select(x => x.Clone()).ToList();
             for (int i = 0; i < topCharacters.ToList().Count; i++)
             {
-                topCharacters[i].id += (characters.Count + eliminateReproduceAmount) * round;
+                topCharacters[i].id += (characters.Count + _eliminateReproduceAmount) * round;
                 topCharacters[i].OpponentsActions.Clear();
             }
             characters.AddRange(topCharacters);
@@ -56,13 +67,16 @@ namespace EvolutionOfTrust
             }
         }
 
+        /// <summary>
+        /// Проигрывание одного раунда (одноразовое сопоставление, действие участников друг с другом)
+        /// </summary>
         private void PlayRound()
         {
             for (int i = 0; i < characters.Count; i++)
             {
                 for (int j = i + 1; j < characters.Count; j++)
                 {
-                    match.Match2Characters(characters[i], characters[j], isFirstRound);
+                    match.Match2Characters(characters[i], characters[j], isFirstRound, _mistakeChance);
                 }
             }
             isFirstRound = false;
