@@ -5,12 +5,12 @@ namespace EvolutionOfTrust
 {
     internal class Match
     {
-        PointsSystem _pointsSystem;
+        private PointsSystem _pointsSystem;
         internal Match(PointsSystem pointsSystem)
         {
-            PointsSystem _pointsSystem = pointsSystem;
+            _pointsSystem = pointsSystem;
         }
-        Random random = new Random();
+        private Random _random = new Random();
 
         public void Match2Characters(Character c1, Character c2, bool isFirstRound, int mistakeChance)
         {
@@ -51,7 +51,7 @@ namespace EvolutionOfTrust
 
         private void MistakeRoll(int mistakeChance, ref Action c1Action)
         {
-            if (mistakeChance > random.Next(1, 101))
+            if (mistakeChance > _random.Next(1, 101))
             {
                 Console.WriteLine("Mistake roll!");
                 c1Action += 1;
@@ -65,17 +65,17 @@ namespace EvolutionOfTrust
             character.OpponentsActions[opponent.id].Add(opponentAction);
         }
 
-        void CoopBothResult(Character c1, Character c2)
+        private void CoopBothResult(Character c1, Character c2)
         {
             c1.points += _pointsSystem.CoopPoints;
             c2.points += _pointsSystem.CoopPoints;
         }
-        void CheatBothResult(Character c1, Character c2)
+        private void CheatBothResult(Character c1, Character c2)
         {
             c1.points += _pointsSystem.CheatBothPoints;
             c2.points += _pointsSystem.CheatBothPoints;
         }
-        void CoopCheatResult(Character coopCharacter, Character cheatCharacter)
+        private void CoopCheatResult(Character coopCharacter, Character cheatCharacter)
         {
             coopCharacter.points += _pointsSystem.CheatedPoints;
             cheatCharacter.points += _pointsSystem.CheatPoints;

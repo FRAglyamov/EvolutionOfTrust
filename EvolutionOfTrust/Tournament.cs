@@ -6,13 +6,13 @@ namespace EvolutionOfTrust
 {
     public class Tournament
     {
-        List<Character> characters;
-        int _roundsAmount = 10;
-        int _eliminateReproduceAmount = 1;
-        int _mistakeChance = 5;
-        PointsSystem _pointsSystem = new PointsSystem();
-        bool isFirstRound = true;
-        Match match;
+        private List<Character> characters;
+        private int _roundsAmount = 10;
+        private int _eliminateReproduceAmount = 1;
+        private int _mistakeChance = 5;
+        private PointsSystem _pointsSystem = new PointsSystem();
+        private bool isFirstRound = true;
+        private Match match;
 
         public Tournament() { }
         public Tournament(int roundAmount, int eliminateReproduceAmount, int mistakeChance, PointsSystem pointsSystem)
@@ -25,7 +25,7 @@ namespace EvolutionOfTrust
 
         public void PlayTournament(List<Character> _characters)
         {
-            Match match = new Match(_pointsSystem);
+            match = new Match(_pointsSystem);
             characters = _characters;
             for (int i = 1; i <= _roundsAmount; i++)
             {
