@@ -2,14 +2,14 @@
 
 namespace EvolutionOfTrust.Characters
 {
-    public class Cooperator : Character
+    public class Grudger : Character
     {
-        public Cooperator(int id) : base(id) { }
+        public Grudger(int id) : base(id) { }
         public override Action FirstAction => Action.Coop;
 
         public override Action MakeAction(int opponentId)
         {
-            return Action.Coop;
+            return OpponentsActions[opponentId].Exists(x => x == Action.Cheat) ? Action.Cheat : Action.Coop;
         }
     }
 }

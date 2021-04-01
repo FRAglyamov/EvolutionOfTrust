@@ -6,38 +6,61 @@ namespace EvolutionOfTrust
 {
     public class Tournament
     {
-        private List<Character> characters;
-        private int _roundsAmount = 10;
-        private int _eliminateReproduceAmount = 1;
-        private int _mistakeChance = 5;
+        private List<Character> _characters;
+        private int _roundsAmount;
+        private int _eliminateReproduceAmount;
+        private int _mistakeChance;
         private PointsSystem _pointsSystem = new PointsSystem();
-        private bool isFirstRound = true;
-        private Match match;
+        private bool _isFirstRound = true;
+        private Match _match;
 
-        public Tournament() { }
-        public Tournament(int roundAmount, int eliminateReproduceAmount, int mistakeChance, PointsSystem pointsSystem)
+        //public Tournament() { }
+        /// <summary>
+        /// PointSystem по умолчанию (2,3,-1,0)
+        /// </summary>
+        /// <param name="pointsSystem"></param>
+        /// <param name="roundAmount"></param>
+        /// <param name="eliminateReproduceAmount"></param>
+        /// <param name="mistakeChance"></param>
+        public Tournament(PointsSystem pointsSystem = default(PointsSystem), int roundAmount = 10, int eliminateReproduceAmount = 2, int mistakeChance = 5)
         {
+            if (pointsSystem != null)
+                _pointsSystem = pointsSystem;
             _roundsAmount = roundAmount;
             _eliminateReproduceAmount = eliminateReproduceAmount;
             _mistakeChance = mistakeChance;
-            _pointsSystem = pointsSystem;
         }
 
-        public void PlayTournament(List<Character> _characters)
+        public void PlayTournament(List<Character> characters, out Dictionary<int, List<Character>> tournamentLogs, bool printLogs = false)
         {
-            match = new Match(_pointsSystem);
-            characters = _characters;
+            tournamentLogs = new Dictionary<int, List<Character>>();
+            _match = new Match(_pointsSystem);
+            _characters = characters;
             for (int i = 1; i <= _roundsAmount; i++)
             {
-                //Console.WriteLine();
-                //PrintResults();
                 PlayRound();
-                //Console.WriteLine();
-                //PrintResults();
                 GeneticLikeReproduce(i);
-                Console.WriteLine("\nRound " + i);
-                PrintResults();
+                if(printLogs)
+                {
+                    Console.WriteLine("\nRound " + i);
+                    PrintResults();
+                }    
+                tournamentLogs.Add(i, _characters.Select(x => x.Clone()).ToList());
                 ResetPoints();
+            }
+        }
+
+        public void PrintLogsInConsole(Dictionary<int, List<Character>> tournamentLogs)
+        {
+            for (int i = 1; i <= _roundsAmount; i++)
+            {
+                Console.WriteLine("Round " + i);
+                List<Character> tmpCharacterList = tournamentLogs[i];
+                foreach (Character c in tmpCharacterList)
+                {
+                    Console.WriteLine("ID: " + c.id + ", Type: " + c.GetType().Name + ", Points: " + c.points);
+                }
+                Console.WriteLine();
             }
         }
 
@@ -47,23 +70,25 @@ namespace EvolutionOfTrust
         /// </summary>
         private void GeneticLikeReproduce(int round)
         {
-            characters.Sort((c1, c2) => c2.points.CompareTo(c1.points));
-            characters.RemoveRange(characters.Count - _eliminateReproduceAmount, _eliminateReproduceAmount);
+            _characters.Sort((c1, c2) => c2.points.CompareTo(c1.points));
+            _characters.RemoveRange(_characters.Count - _eliminateReproduceAmount, _eliminateReproduceAmount);
 
-            var topCharacters = characters.Take(_eliminateReproduceAmount).Select(x => x.Clone()).ToList();
+            var topCharacters = _characters.Take(_eliminateReproduceAmount).Select(x => x.Clone()).ToList();
             for (int i = 0; i < topCharacters.ToList().Count; i++)
             {
-                topCharacters[i].id += (characters.Count + _eliminateReproduceAmount) * round;
+                topCharacters[i].id += (_characters.Count + _eliminateReproduceAmount) * round;
                 topCharacters[i].OpponentsActions.Clear();
             }
-            characters.AddRange(topCharacters);
+            _characters.AddRange(topCharacters);
         }
-
+        /// <summary>
+        /// Сбрасывание очков до 0 у всех Character'ов
+        /// </summary>
         private void ResetPoints()
         {
-            for (int i = 0; i < characters.Count; i++)
+            for (int i = 0; i < _characters.Count; i++)
             {
-                characters[i].points = 0;
+                _characters[i].points = 0;
             }
         }
 
@@ -72,19 +97,19 @@ namespace EvolutionOfTrust
         /// </summary>
         private void PlayRound()
         {
-            for (int i = 0; i < characters.Count; i++)
+            for (int i = 0; i < _characters.Count; i++)
             {
-                for (int j = i + 1; j < characters.Count; j++)
+                for (int j = i + 1; j < _characters.Count; j++)
                 {
-                    match.Match2Characters(characters[i], characters[j], isFirstRound, _mistakeChance);
+                    _match.Match2Characters(_characters[i], _characters[j], _isFirstRound, _mistakeChance);
                 }
             }
-            isFirstRound = false;
+            _isFirstRound = false;
         }
 
         private void PrintResults()
         {
-            foreach (Character c in characters)
+            foreach (Character c in _characters)
             {
                 Console.WriteLine("ID: " + c.id + ", Type: " + c.GetType().Name + ", Points: " + c.points);
             }
