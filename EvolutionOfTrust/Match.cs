@@ -15,7 +15,7 @@ namespace EvolutionOfTrust
         public void Match2Characters(Character c1, Character c2, bool isFirstRound, int mistakeChance)
         {
             Action c1Action, c2Action;
-            if (isFirstRound || c1.OpponentsActions.ContainsKey(c2.id) == false)
+            if (isFirstRound || !c1.OpponentsActions.ContainsKey(c2.id) || !c2.OpponentsActions.ContainsKey(c1.id))
             {
                 c1Action = c1.FirstAction;
                 c2Action = c2.FirstAction;
@@ -53,7 +53,6 @@ namespace EvolutionOfTrust
         {
             if (mistakeChance > _random.Next(1, 101))
             {
-                Console.WriteLine("Mistake roll!");
                 c1Action += 1;
             }
         }

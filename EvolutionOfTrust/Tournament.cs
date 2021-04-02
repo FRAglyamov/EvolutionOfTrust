@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EvolutionOfTrust.Characters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,8 +7,9 @@ namespace EvolutionOfTrust
 {
     public class Tournament
     {
-        private List<Character> _characters;
+        private List<Character> _characters = new List<Character>();
         private int _roundsAmount;
+        private int _tournamentAmount;
         private int _eliminateReproduceAmount;
         private int _mistakeChance;
         private PointsSystem _pointsSystem = new PointsSystem();
@@ -22,21 +24,22 @@ namespace EvolutionOfTrust
         /// <param name="roundAmount"></param>
         /// <param name="eliminateReproduceAmount"></param>
         /// <param name="mistakeChance"></param>
-        public Tournament(PointsSystem pointsSystem = default(PointsSystem), int roundAmount = 10, int eliminateReproduceAmount = 2, int mistakeChance = 5)
+        public Tournament(PointsSystem pointsSystem = default(PointsSystem), int roundAmount = 10, int tournamentAmount = 5, int eliminateReproduceAmount = 2, int mistakeChance = 5)
         {
             if (pointsSystem != null)
                 _pointsSystem = pointsSystem;
             _roundsAmount = roundAmount;
+            _tournamentAmount = tournamentAmount;
             _eliminateReproduceAmount = eliminateReproduceAmount;
             _mistakeChance = mistakeChance;
         }
 
-        public void PlayTournament(List<Character> characters, out Dictionary<int, List<Character>> tournamentLogs, bool printLogs = false)
+        public void PlayTournaments(List<Character> characters, out Dictionary<int, List<Character>> tournamentLogs, bool printLogs = false)
         {
             tournamentLogs = new Dictionary<int, List<Character>>();
             _match = new Match(_pointsSystem);
             _characters = characters;
-            for (int i = 1; i <= _roundsAmount; i++)
+            for (int i = 1; i <= _tournamentAmount; i++)
             {
                 PlayRound();
                 GeneticLikeReproduce(i);
@@ -52,7 +55,7 @@ namespace EvolutionOfTrust
 
         public void PrintLogsInConsole(Dictionary<int, List<Character>> tournamentLogs)
         {
-            for (int i = 1; i <= _roundsAmount; i++)
+            for (int i = 1; i <= _tournamentAmount; i++)
             {
                 Console.WriteLine("Round " + i);
                 List<Character> tmpCharacterList = tournamentLogs[i];
@@ -101,10 +104,14 @@ namespace EvolutionOfTrust
             {
                 for (int j = i + 1; j < _characters.Count; j++)
                 {
-                    _match.Match2Characters(_characters[i], _characters[j], _isFirstRound, _mistakeChance);
+                    _isFirstRound = true;
+                    for (int k = 0; k < _roundsAmount; k++)
+                    {
+                        _match.Match2Characters(_characters[i], _characters[j], _isFirstRound, _mistakeChance);
+                        _isFirstRound = false;
+                    }
                 }
             }
-            _isFirstRound = false;
         }
 
         private void PrintResults()
@@ -114,5 +121,16 @@ namespace EvolutionOfTrust
                 Console.WriteLine("ID: " + c.id + ", Type: " + c.GetType().Name + ", Points: " + c.points);
             }
         }
+
+        //public List<Character> CreateListOfCharacters(params (Type character, int amount)[] tuples)
+        //{
+        //    foreach (var t in tuples)
+        //    {
+        //        for (int i = 0; i < t.amount; i++)
+        //        {
+        //        }
+        //    }
+        //    return _characters;
+        //}
     }
 }

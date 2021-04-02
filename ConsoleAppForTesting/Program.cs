@@ -10,18 +10,32 @@ namespace ConsoleAppForTesting
         static void Main(string[] args)
         {
             List<Character> characters = new List<Character>();
-            characters.Add(new Cheater(characters.Count));
-            characters.Add(new Cheater(characters.Count));
-            characters.Add(new Copycat(characters.Count));
-            characters.Add(new Copycat(characters.Count));
-            characters.Add(new Copycat(characters.Count));
-            characters.Add(new Copycat(characters.Count));
-            characters.Add(new Copycat(characters.Count));
 
-            Tournament tournament = new Tournament();
-            Dictionary<int, List<Character>> tournamentLogs;
-            tournament.PlayTournament(characters, out tournamentLogs);
-            tournament.PrintLogsInConsole(tournamentLogs);
+            for (int i = 0; i < 12; i++)
+            {
+                characters.Add(new Cheater(characters.Count));
+            }
+            for (int i = 0; i < 13; i++)
+            {
+                characters.Add(new Copycat(characters.Count));
+            }
+            for (int i = 0; i < 0; i++)
+            {
+                characters.Add(new Cooperator(characters.Count));
+            }
+            for (int i = 0; i < 0; i++)
+            {
+                characters.Add(new Grudger(characters.Count));
+            }
+            for (int i = 0; i < 0; i++)
+            {
+                characters.Add(new RandomJoker(characters.Count));
+            }
+
+            Tournament tournament = new Tournament(mistakeChance: 0, eliminateReproduceAmount: 5);
+            //Dictionary<int, List<Character>> tournamentLogs;
+            tournament.PlayTournaments(characters, out _, printLogs: true);
+            //tournament.PrintLogsInConsole(tournamentLogs);
             Console.ReadKey();
         }
     }
