@@ -2,6 +2,9 @@
 
 namespace EvolutionOfTrust.Characters
 {
+    /// <summary>
+    /// Шут, действие которого воля случая
+    /// </summary>
     public class RandomJoker : Character
     {
         System.Random random = new System.Random();

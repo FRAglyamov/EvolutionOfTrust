@@ -2,6 +2,9 @@
 
 namespace EvolutionOfTrust
 {
+    /// <summary>
+    /// Система изменения очков при взаимодействии Character'ов
+    /// </summary>
     public class PointsSystem
     {
         public int CoopPoints { get; private set; }

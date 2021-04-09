@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace EvolutionOfTrust
 {
+    /// <summary>
+    /// Класс матча (одноразового взаимодействия) Character'ов друг с другом
+    /// </summary>
     internal class Match
     {
         private PointsSystem _pointsSystem;
@@ -12,6 +15,13 @@ namespace EvolutionOfTrust
         }
         private Random _random = new Random();
 
+        /// <summary>
+        /// Проигрывание одного раунда между двумя Character'ами
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
+        /// <param name="isFirstRound"></param>
+        /// <param name="mistakeChance"></param>
         public void Match2Characters(Character c1, Character c2, bool isFirstRound, int mistakeChance)
         {
             Action c1Action, c2Action;
@@ -49,6 +59,11 @@ namespace EvolutionOfTrust
             }
         }
 
+        /// <summary>
+        /// Бросок "кубика" на ошибку
+        /// </summary>
+        /// <param name="mistakeChance"></param>
+        /// <param name="c1Action"></param>
         private void MistakeRoll(int mistakeChance, ref Action c1Action)
         {
             if (mistakeChance > _random.Next(1, 101))
@@ -57,6 +72,12 @@ namespace EvolutionOfTrust
             }
         }
 
+        /// <summary>
+        /// Запись/запоминание действия оппонента
+        /// </summary>
+        /// <param name="character"></param>
+        /// <param name="opponent"></param>
+        /// <param name="opponentAction"></param>
         private static void MemorizeOpponentAction(Character character, Character opponent, Action opponentAction)
         {
             if (!character.OpponentsActions.ContainsKey(opponent.id))
@@ -64,16 +85,33 @@ namespace EvolutionOfTrust
             character.OpponentsActions[opponent.id].Add(opponentAction);
         }
 
+        /// <summary>
+        /// Изменение очков Character'ов при ситуации Coop - Coop
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
         private void CoopBothResult(Character c1, Character c2)
         {
             c1.points += _pointsSystem.CoopPoints;
             c2.points += _pointsSystem.CoopPoints;
         }
+
+        /// <summary>
+        /// Изменение очков Character'ов при ситуации Cheat - Cheat
+        /// </summary>
+        /// <param name="c1"></param>
+        /// <param name="c2"></param>
         private void CheatBothResult(Character c1, Character c2)
         {
             c1.points += _pointsSystem.CheatBothPoints;
             c2.points += _pointsSystem.CheatBothPoints;
         }
+
+        /// <summary>
+        /// Изменение очков Character'ов при ситуации Coop - Cheat
+        /// </summary>
+        /// <param name="coopCharacter"></param>
+        /// <param name="cheatCharacter"></param>
         private void CoopCheatResult(Character coopCharacter, Character cheatCharacter)
         {
             coopCharacter.points += _pointsSystem.CheatedPoints;

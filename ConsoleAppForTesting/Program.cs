@@ -5,6 +5,9 @@ using EvolutionOfTrust.Characters;
 
 namespace ConsoleAppForTesting
 {
+    /// <summary>
+    /// Стандартный класс консольного приложения для тестирования библиотеки
+    /// </summary>
     class Program
     {
         static void Main(string[] args)

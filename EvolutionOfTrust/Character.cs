@@ -2,12 +2,18 @@
 
 namespace EvolutionOfTrust
 {
+    /// <summary>
+    /// Доступные действия Character'а
+    /// </summary>
     public enum Action
     {
         Coop,
         Cheat
     }
 
+    /// <summary>
+    /// Абстрактный класс персонажа/характера
+    /// </summary>
     public abstract class Character
     {
         public int id;
@@ -24,10 +30,5 @@ namespace EvolutionOfTrust
         {
             return (Character)this.MemberwiseClone();
         }
-
-        //public int CompareTo(Character other)
-        //{
-        //    return points.CompareTo(other.points);
-        //}
     }
 }
