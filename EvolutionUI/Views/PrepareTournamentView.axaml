@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EvolutionUI.Views.PrepareTournamentView">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="4">
+      <TextBlock Text="Current settings: "/>
+      <TextBlock Text="{Binding PointSystem}"/>
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="4">
+      <ItemsControl Items="{Binding Characters}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <StackPanel DockPanel.Dock="Top" Margin="4" Orientation="Horizontal">
+              <TextBlock Text="Type: " Width="40"/>
+              <TextBlock Text="{Binding Name}" Width="100"/>
+              <TextBlock Text="Id: " Width="30"/>
+              <TextBlock Text="{Binding Id}" Width="100"/>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+    
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Amount of rounds: " Width="170"/>
+      <TextBox Watermark="Enter number" Text="{Binding RoundAmount}"/>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Amount of tournaments: " Width="170"/>
+      <TextBox Watermark="Enter number" Text="{Binding TournamentAmount}"/>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Elimination rate: " Width="170"/>
+      <TextBox Watermark="Enter number" Text="{Binding EliminateReproduceAmount}"/>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Mistake chance: " Width="170"/>
+      <TextBox Watermark="Enter number" Text="{Binding MistakeChance}"/>
+    </StackPanel>
+
+    <Button DockPanel.Dock="Top" Command="{Binding Proceed}">Proceed</Button>
+  </DockPanel>
+</UserControl>

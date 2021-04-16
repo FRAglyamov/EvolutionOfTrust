@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EvolutionUI.Views.ParticipantsView">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="4">
+      <TextBlock Text="Current settings: "/>
+      <TextBlock Text="{Binding PointSystem}"/>
+    </StackPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="4">
+      <ItemsControl Items="{Binding Characters}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <StackPanel DockPanel.Dock="Top" Margin="4" Orientation="Horizontal">
+              <TextBlock Text="Type: " Width="40"/>
+              <TextBlock Text="{Binding Name}" Width="100"/>
+              <TextBlock Text="Id: " Width="30"/>
+              <TextBlock Text="{Binding Id}" Width="100"/>
+              <Button Command="{Binding $parent[UserControl].DataContext.Remove}" CommandParameter="{Binding Id}">Remove</Button>
+            </StackPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
+    <StackPanel>
+      <Button DockPanel.Dock="Bottom" Command="{Binding AddParticipant}">Add new</Button>
+      <Button DockPanel.Dock="Bottom" Command="{Binding DoPrepareTournament}">Prepare tournament</Button>
+    </StackPanel>
+  </DockPanel>
+</UserControl>
