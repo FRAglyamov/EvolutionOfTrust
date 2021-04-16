@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EvolutionUI.Views.PointSystemView">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Coop Points: " Width="160"/>
+      <TextBox Watermark="Enter number of points" Text="{Binding CoopPoints}"/>
+    </StackPanel>
+    
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Cheat Points: " Width="160"/>
+      <TextBox Watermark="Enter number of points" Text="{Binding CheatPoints}"/>
+    </StackPanel>
+    
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Cheated Points: " Width="160"/>
+      <TextBox Watermark="Enter number of points" Text="{Binding CheatedPoints}"/>
+    </StackPanel>
+    
+    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
+      <TextBlock Text="Cheated Both Points: " Width="160"/>
+      <TextBox Watermark="Enter number of points" Text="{Binding CheatBothPoints}"/>
+    </StackPanel>
+    
+    <Button DockPanel.Dock="Top" Command="{Binding Proceed}">Proceed</Button>
+  </DockPanel>
+</UserControl>

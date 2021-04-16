@@ -16,6 +16,21 @@ namespace EvolutionOfTrust
     /// </summary>
     public abstract class Character
     {
+        public int Id
+        {
+            get => id;
+        }
+
+        public int Points
+        {
+            get => points;
+        }
+
+        public string Name
+        {
+            get => this.GetType().Name;
+        }
+
         public int id;
         public int points;
         public Dictionary<int, List<Action>> OpponentsActions = new Dictionary<int, List<Action>>();

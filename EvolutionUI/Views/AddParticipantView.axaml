@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="EvolutionUI.Views.AddParticipantView">
+  <DockPanel HorizontalAlignment="Center">
+    <Button DockPanel.Dock="Top" Margin="4" Command="{Binding AddCheater}">Add Cheater</Button>
+    <Button DockPanel.Dock="Top" Margin="4" Command="{Binding AddCooperator}">Add Cooperator</Button>
+    <Button DockPanel.Dock="Top" Margin="4" Command="{Binding AddCopycat}">Add Copycat</Button>
+    <Button DockPanel.Dock="Top" Margin="4" Command="{Binding AddGrudger}">Add Grudger</Button>
+    <Button DockPanel.Dock="Top" Margin="4" Command="{Binding AddRandomJoker}">Add RandomJoker</Button>
+
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="4">
+      <Button DockPanel.Dock="Bottom" Command="{Binding Cancel}">Cancel</Button>
+    </StackPanel>
+  </DockPanel>
+</UserControl>

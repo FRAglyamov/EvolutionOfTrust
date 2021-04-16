@@ -1,9 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace EvolutionOfTrust
 {
+    public class LogEntry
+    {
+        string entry;
+        public string Entry { get => entry; }
+
+        public LogEntry(string log)
+        {
+            entry = log;
+        }
+    }
     /// <summary>
     /// Основной класс турнира
     /// </summary>
@@ -18,6 +29,26 @@ namespace EvolutionOfTrust
         private bool _isFirstRound = true;
         private Match _match;
 
+        public int RoundAmount
+        {
+            get => _roundsAmount;
+            set => _roundsAmount = value;
+        }
+        public int TournamentAmount
+        {
+            get => _tournamentAmount;
+            set => _tournamentAmount = value;
+        }
+        public int EliminateReproduceAmount
+        {
+            get => _eliminateReproduceAmount;
+            set => _eliminateReproduceAmount = value;
+        }
+        public int MistakeChance
+        {
+            get => _mistakeChance;
+            set => _mistakeChance = value;
+        }
         /// <summary>
         /// PointSystem по умолчанию (2,3,-1,0)
         /// </summary>
@@ -33,7 +64,10 @@ namespace EvolutionOfTrust
             _tournamentAmount = tournamentAmount;
             _eliminateReproduceAmount = eliminateReproduceAmount;
             _mistakeChance = mistakeChance;
+            Logs = new ObservableCollection<LogEntry>();
         }
+
+        public ObservableCollection<LogEntry> Logs { get; }
 
         /// <summary>
         /// Проигрывание турниров
@@ -50,11 +84,7 @@ namespace EvolutionOfTrust
             {
                 PlayOneTournament();
                 GeneticLikeReproduce(i);
-                if(printLogs)
-                {
-                    Console.WriteLine("\nRound " + i);
-                    PrintResults();
-                }    
+                PrintResults(i, printLogs);
                 tournamentLogs.Add(i, _characters.Select(x => x.Clone()).ToList());
                 ResetPoints();
             }
@@ -139,11 +169,23 @@ namespace EvolutionOfTrust
         /// <summary>
         /// Вывод текущего состояния персонажей (ID, тип персонажа, количество очков)
         /// </summary>
-        private void PrintResults()
+        private void PrintResults(int round, bool printToConsole)
         {
+            string roundlog = "\nRound " + round;
+            Logs.Add(new LogEntry(roundlog));
+            if (printToConsole)
+            {
+                Console.WriteLine(roundlog);
+            }
+
             foreach (Character c in _characters)
             {
-                Console.WriteLine("ID: " + c.id + ", Type: " + c.GetType().Name + ", Points: " + c.points);
+                string log = "ID: " + c.id + ", Type: " + c.GetType().Name + ", Points: " + c.points;
+                Logs.Add(new LogEntry(log));
+                if (printToConsole)
+                {
+                    Console.WriteLine(log);
+                }
             }
         }
     }
